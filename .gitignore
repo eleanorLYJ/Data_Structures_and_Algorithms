@@ -1,6 +1,6 @@
 *.exe
 *.bat
 *.o
-cirularLinkedList.cpp
-queue_array.cpp
-stack_array.cpp
+dataStructure/cirularLinkedList.cpp
+dataStructure/queue_array.cpp
+dataStructure/stack_array.cpp
