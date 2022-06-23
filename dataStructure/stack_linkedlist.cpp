@@ -1,5 +1,5 @@
 #include <iostream>
-#include "node.cpp"
+#include "node.h"
 using namespace std;
 class stack{
     public:
@@ -7,10 +7,12 @@ class stack{
         void pop();
         bool isEmpty();
         void print();
+        stack(){
+            top = NULL;
+        }
     private:
-        node* top = NULL; //not sure
+        node* top;
 };
-
 void stack::push(int val){
     // node* tmp = new node(val);
     // tmp->next = top;

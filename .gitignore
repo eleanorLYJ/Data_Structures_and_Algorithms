@@ -1,0 +1,6 @@
+*.exe
+*.bat
+*.o
+cirularLinkedList.cpp
+queue_array.cpp
+stack_array.cpp
