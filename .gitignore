@@ -3,4 +3,3 @@
 *.o
 dataStructure/cirularLinkedList.cpp
 dataStructure/queue_array.cpp
-dataStructure/stack_array.cpp
