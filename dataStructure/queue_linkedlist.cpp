@@ -28,16 +28,17 @@ void queue::push(int v){
 void queue::pop(){
     if(isEmpty()){
         cout <<"there is empty~";
-        return;
     }
-    if(head == tail){
+    else if(head == tail){
+        node* tmp = head; //!!
         head = tail = NULL;
-        return;
-    }
+        delete tmp;
+    }else{
     node* tmp = head;
     head = head->next;
     delete tmp;
     tmp = NULL;
+    }
 }
 bool queue::isEmpty(){
     return head == NULL and tail == NULL;
