@@ -2,4 +2,3 @@
 *.bat
 *.o
 dataStructure/cirularLinkedList.cpp
-dataStructure/queue_array.cpp
