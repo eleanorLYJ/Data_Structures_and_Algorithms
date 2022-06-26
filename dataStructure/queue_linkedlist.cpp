@@ -27,7 +27,7 @@ void queue::push(int v){
 }
 void queue::pop(){
     if(isEmpty()){
-        cout <<"there is empty~";
+        cout <<"there is empty~\n";
     }
     else if(head == tail){
         node* tmp = head; //!!
@@ -45,21 +45,23 @@ bool queue::isEmpty(){
 }
 void queue::print(){
     if(isEmpty()){
-        cout << "nothing can print";
+        cout << "nothing can print\n";
         return;
     }
     node* ptr = head;
-    while(head){
-        cout << head->val <<" ";
-        head = head->next;
+    while(ptr){
+        cout << ptr->val <<" ";
+        ptr = ptr->next;
     }
+    cout << endl;
 }
 int main(){
     queue qu;
     qu.push(22);
-    qu.pop();
     qu.push(6);
     qu.push(23);
+    qu.print();
+    qu.pop();
     qu.print();
     return 0;
 }

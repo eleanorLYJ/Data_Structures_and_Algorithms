@@ -33,6 +33,10 @@ bool stack::isEmpty(){
     return (top == NULL);
 }
 void stack::print(){
+    if(isEmpty()){
+        cout << "nothing~\n";
+        return;
+    }
     node* tmp = top;
     while(tmp){
         cout << tmp->val <<" ";
@@ -41,10 +45,10 @@ void stack::print(){
 }
 int main(){
     stack st;
+    st.print();
     st.push(14);
     st.push(5);
     st.push(23);
-    st.pop();
     st.print();
     return 0;
 }
