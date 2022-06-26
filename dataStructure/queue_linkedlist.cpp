@@ -8,16 +8,14 @@ class queue{
         void pop();
         bool isEmpty();
         void print();
-        queue(){
-            tail = head = NULL;
-        }
+        queue();
     private:
         node* tail;
         node* head;
 };
-// queue::queue(){
-//     tail = head = NULL;
-// }
+queue::queue(){
+    tail = head = NULL;
+}
 void queue::push(int v){
     if(isEmpty()){
         tail = head = new node(v);
@@ -49,20 +47,11 @@ void queue::print(){
         cout << "nothing can print";
         return;
     }
-    else if(head == tail){ // only one node
-        cout << head->val;
-        return;
-    }
-    else{
+    node* ptr = head;
+    while(head){
         cout << head->val <<" ";
-        node* ptr = head->next;
-        while(ptr != tail){
-            cout << ptr->val <<" ";
-            ptr = ptr->next;
-        }
-        cout << tail->val;
+        head = head->next;
     }
-
 }
 int main(){
     queue qu;
