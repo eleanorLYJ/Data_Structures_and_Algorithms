@@ -30,14 +30,11 @@ void queue::pop(){
         cout <<"there is empty~\n";
     }
     else if(head == tail){
-        node* tmp = head; //!!
         head = tail = NULL;
-        delete tmp;
     }else{
-    node* tmp = head;
-    head = head->next;
-    delete tmp;
-    tmp = NULL;
+        node* tmp = head;
+        head = head->next;
+        delete tmp;
     }
 }
 bool queue::isEmpty(){
@@ -60,7 +57,6 @@ int main(){
     qu.push(22);
     qu.push(6);
     qu.push(23);
-    qu.print();
     qu.pop();
     qu.print();
     return 0;
