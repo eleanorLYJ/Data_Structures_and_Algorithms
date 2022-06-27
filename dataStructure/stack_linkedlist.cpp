@@ -27,7 +27,6 @@ void stack::pop(){
     node* tmp = top;
     top = top->next;
     delete tmp;
-    tmp = NULL;
 }
 bool stack::isEmpty(){
     return (top == NULL);
