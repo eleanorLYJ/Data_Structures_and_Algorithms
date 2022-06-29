@@ -30,7 +30,9 @@ void queue::pop(){
         cout <<"there is empty~\n";
     }
     else if(head == tail){
+        node* tmp = head;
         head = tail = NULL;
+        delete tmp; // delete the value in heap (dynamic) ,however pointers belong to local variable in stack ,it's alright XD
     }else{
         node* tmp = head;
         head = head->next;
@@ -54,10 +56,11 @@ void queue::print(){
 }
 int main(){
     queue qu;
+    qu.pop();
     qu.push(22);
+    qu.pop();
     qu.push(6);
     qu.push(23);
-    qu.pop();
     qu.print();
     return 0;
 }
