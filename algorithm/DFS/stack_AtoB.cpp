@@ -29,14 +29,15 @@ bool dfs(int A, int B){
 
 int main(){
     int n, m;
-    cin >> n >> m;
-    int i , j;
-    for(int k = 0; k < m ; k++){
-        cin >> i >> j;
-        matrix[i][j] = true;
+    while(cin >> n >> m){
+        int i , j;
+        for(int k = 0; k < m ; k++){
+            cin >> i >> j;
+            matrix[i][j] = true;
+        }
+        int A, B;
+        cin >> A >> B;
+        dfs(A,B)? cout << "yes!!!" : cout << "no!";
     }
-    int A, B;
-    cin >> A >> B;
-    dfs(A,B)? cout << "yes" : cout << "no!";
     return 0;
 }
