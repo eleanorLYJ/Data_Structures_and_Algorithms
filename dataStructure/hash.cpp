@@ -10,21 +10,29 @@ class hashStruct{
         void push(int,int);
         void pop(int); // key
         int find(int);
+        hashStruct();
     private:
-        vector<pair<int,int>>h = vector<pair<int,int>>(13,pair<int,int>(0,0));//class 裡的宣告時不可以有執行語句，不可以直接寫call constructer
-        vector<int>vis = vector<int>(13,0);
+        vector<pair<int,int>>h; //class 裡的宣告時不可以有執行語句，不可以直接寫call constructer
+        vector<int>vis;
         int mod = 13;
-        int hash(int key){
-            return key % mod;
-        }
+        int vec_size = 13;
+        int hash(int);
 };
+int hashStruct ::hash(int key){
+    return key % mod;
+}
+hashStruct::hashStruct(){
+    h = vector<pair<int,int>>(vec_size,pair<int,int>(0,0));
+    vis = vector<int>(13,0);
+}
 bool hashStruct::isExsit(int key){
     if(h[hash(key)].first == key){
         return true;
     }else{
         int pos = key + 1;
-        while(hash(pos) != hash(key) && vis[hash(pos)]){
-            if(h[hash(pos)].first == key){
+        //(hash(key)+pos)%vec_size should be repaced XDDD 
+        while((hash(key)+pos)%vec_size != hash(key) && vis[(hash(key)+pos)%vec_size]){
+            if(h[(hash(key)+pos)%vec_size].first == key){
                 return true;
             }
             pos += 1;
@@ -37,11 +45,11 @@ void hashStruct::push(int key, int val){
     if(vis[hash(key)]){
         cout << "overflow happen!\n";
         int pos = key + 1;
-        while(hash(pos) != hash(key)){
-            if(!vis[hash(pos)]){
-                h[hash(pos)].first = key;
-                h[hash(pos)].second = val;
-                vis[hash(pos)] = 1;
+        while((hash(key)+pos)%vec_size != hash(key)){
+            if(!vis[(hash(key)+pos)%vec_size]){
+                h[(hash(key)+pos)%vec_size].first = key;
+                h[(hash(key)+pos)%vec_size].second = val;
+                vis[(hash(key)+pos)%vec_size] = 1;
                 return;
             }
             pos += 1;
@@ -59,9 +67,9 @@ void hashStruct::pop(int key){
     if(h[hash(key)].first != key){
         int pos = key + 1;
         // linear probing
-        while(hash(pos) != hash(key) && vis[hash(pos)]){
-            if(h[hash(pos)].first == key){
-                vis[hash(pos)] = 0;
+        while((hash(key)+pos)%vec_size != hash(key) && vis[hash(pos)]){
+            if(h[(hash(key)+pos)%vec_size].first == key){
+                vis[(hash(key)+pos)%vec_size] = 0;
                 return;
             }
             pos += 1;
@@ -77,7 +85,7 @@ int hashStruct::find(int key){
         return h[hash(key)].second;
     }else{
         int pos = key + 1;
-        while(hash(pos) != hash(key) && vis[hash(pos)]){
+        while((hash(key)+pos)%vec_size != hash(key) && (hash(key)+pos)%vec_size){
             if(h[hash(pos)].first == key){
                 return h[hash(pos)].second;
             }
