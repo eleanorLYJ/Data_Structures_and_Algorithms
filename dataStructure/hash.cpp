@@ -9,36 +9,39 @@ class hashStruct{
         bool isExsit(int); //key
         void push(int,int);
         void pop(int); // key
-        void find(int);
-        hashStruct();
+        int find(int);
     private:
-        vector<pair<int,int>>h;
-    // protect:? 
-};
-hashStruct::hashStruct(){
-    for(int i =0; i <13; i++){
-        pair<int,int>tmp(0,0);
-        h.push_back(tmp);
-    }
-}
-bool hashStruct::isExsit(int key){
-    for(int i = 0; i < size; i++){
-        if(h[i].first == key){
-            cout << key <<" exsit\n";
-            return true;
+        vector<pair<int,int>>h = vector<pair<int,int>>(13,pair<int,int>(0,0));//class 裡的宣告時不可以有執行語句，不可以直接寫call constructer
+        vector<int>vis = vector<int>(13,0);
+        int mod = 13;
+        int hash(int key){
+            return key % mod;
         }
+};
+bool hashStruct::isExsit(int key){
+    if(h[hash(key)].first == key){
+        return true;
+    }else{
+        int pos = key + 1;
+        while(hash(pos) != hash(key) && vis[hash(pos)]){
+            if(h[hash(pos)].first == key){
+                return true;
+            }
+            pos += 1;
+        }
+        cout << "i cannot find!\n";
+        return false;
     }
-    cout << "no exsit\n";
-    return false;
 }
 void hashStruct::push(int key, int val){
-    if(h[key%size].second != 0){
+    if(vis[hash(key)]){
         cout << "overflow happen!\n";
         int pos = key + 1;
-        while(pos%size != key%size){
-            if(h[pos%size].second == 0){
-                h[pos%size].first = key;
-                h[pos%size].second = val;
+        while(hash(pos) != hash(key)){
+            if(!vis[hash(pos)]){
+                h[hash(pos)].first = key;
+                h[hash(pos)].second = val;
+                vis[hash(pos)] = 1;
                 return;
             }
             pos += 1;
@@ -46,18 +49,19 @@ void hashStruct::push(int key, int val){
         cout << "all is full \n";
     }
     else{
-        h[key%size].first = key;
-        h[key%size].second = val; 
+        h[hash(key)].first = key;
+        h[hash(key)].second = val;
+        vis[hash(key)] = 1;
         cout << "push success!\n";
     }        
 }
 void hashStruct::pop(int key){
-    if(h[key%size].first != key){
+    if(h[hash(key)].first != key){
         int pos = key + 1;
-        while(pos%size != key%size){
-            if(h[pos%size].first == key){
-                h[pos%size].first = 0;
-                h[pos%size].second = 0;
+        // linear probing
+        while(hash(pos) != hash(key) && vis[hash(pos)]){
+            if(h[hash(pos)].first == key){
+                vis[hash(pos)] = 0;
                 return;
             }
             pos += 1;
@@ -65,31 +69,29 @@ void hashStruct::pop(int key){
         cout << "i don't find it\n";
     }
     else{
-        h[key%size].first = 0;
-        h[key%size].second = 0;
+        vis[hash(key)] = 0;
     }
 }
-void hashStruct::find(int key){
-    if(h[key%size].first == key){
-        cout << h[key%size].second;
-        return;
+int hashStruct::find(int key){
+    if(h[hash(key)].first == key){
+        return h[hash(key)].second;
     }else{
         int pos = key + 1;
-        while(pos%size != key%size){
-            if(h[pos%size].first == key){
-                cout << h[pos%size].second <<endl;
-                return;
+        while(hash(pos) != hash(key) && vis[hash(pos)]){
+            if(h[hash(pos)].first == key){
+                return h[hash(pos)].second;
             }
             pos += 1;
         }
         cout << "i cannot find!\n";
+        return 0;
     }
 }
 int main(){
     hashStruct ha;
     ha.push(12,5);
     ha.push(25,3);
-    ha.isExsit(25);
-    ha.find(25);
+    cout << ha.isExsit(2) <<" ";
+    cout << ha.find(12);
     return 0;
 }
