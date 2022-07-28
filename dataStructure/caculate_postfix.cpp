@@ -7,41 +7,50 @@ int main(){
     string str;
     stack<int>st;
     getline(cin,str);
+
+    //to handle >9 number
+    int sum = 0;
+    bool pre_is_num = false;
     for(int i = 0; i < str.size(); i++){
-        int ans = 0;
-        if (str[i] == ' ') continue;
-        else if(str[i] >= '0' && str[i] <= '9'){
-            st.push(str[i]-'0');
+        if (str[i] == ' '){
+            if(pre_is_num){
+                st.push(sum);
+                pre_is_num = false;
+            }
         }
+        else if(str[i] >= '0' && str[i] <= '9'){
+            if(pre_is_num){
+                sum = sum * 10 + (str[i] - '0');
+            }else{ //pre is not num
+                sum = str[i] - '0';
+            }
+            pre_is_num = true;
+        }
+
         else if(str[i] == '+'){
             int top = st.top(); st.pop();
             int top2 = st.top(); st.pop();
-            ans = top2 + top;
-            st.push(ans);
+            st.push(top2 + top);
         }
         else if(str[i] == '-'){
             int top = st.top(); st.pop();
             int top2 = st.top(); st.pop();
-            ans = top2 - top;
-            st.push(ans);
+            st.push(top2 - top);
         }
         else if(str[i] == '*'){
             int top = st.top(); st.pop();
             int top2 = st.top(); st.pop();
-            ans = top2 * top;
-            st.push(ans);
+            st.push(top2 * top);
         }
         else if(str[i] == '/'){
             int top = st.top(); st.pop();
             int top2 = st.top(); st.pop();
-            ans = top2 / top;
-            st.push(ans);
+            st.push(top2 / top);
         }
         else{
             int top = st.top(); st.pop();
             int top2 = st.top(); st.pop();
-            ans = top2 % top;
-            st.push(ans);
+            st.push(top2 % top);
         }
     }
     
