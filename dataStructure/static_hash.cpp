@@ -2,7 +2,8 @@
 #include <vector>
 using namespace std;
 
-
+// static hash function: division method
+// solve overflow function: liear probing
 class hashStruct{
     public:
         bool isExsit(int); //input: key
@@ -17,9 +18,9 @@ class hashStruct{
         int vec_size = 3;
         // static hash function
         int hash(int);
-        //input: key ,output: the empty position, if return -1 mean caanot find!
+        //input: key ,output: the empty position, if (that output is -1) mean caanot find!
         int linear_probing_to_find_empty_pos(int);
-        //input: key, output: key position, if return -1 mean caanot find!
+        //input: key, output: key position, if (that output is -1) mean caanot find!
         int linear_probing_to_find_key_position(int);
 };
 hashStruct::hashStruct(){
