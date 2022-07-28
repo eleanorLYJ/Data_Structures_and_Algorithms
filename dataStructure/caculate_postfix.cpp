@@ -11,7 +11,7 @@ int main(){
     //to handle >9 number
     bool pre_is_num = false;
     for(int i = 0; i < str.size(); i++){
-        if (str[i] == ' '){
+        if(str[i] == ' '){
             if(pre_is_num){
                 pre_is_num = false;
             }
@@ -20,6 +20,7 @@ int main(){
             int num;
             if(pre_is_num){
                 num = st.top();
+                st.pop();
                 num = num * 10 + (str[i] - '0');
             }else{ //pre is not num
                 num = str[i] - '0';
