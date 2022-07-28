@@ -9,21 +9,22 @@ int main(){
     getline(cin,str);
 
     //to handle >9 number
-    int sum = 0;
     bool pre_is_num = false;
     for(int i = 0; i < str.size(); i++){
         if (str[i] == ' '){
             if(pre_is_num){
-                st.push(sum);
                 pre_is_num = false;
             }
         }
         else if(str[i] >= '0' && str[i] <= '9'){
+            int num;
             if(pre_is_num){
-                sum = sum * 10 + (str[i] - '0');
+                num = st.top();
+                num = num * 10 + (str[i] - '0');
             }else{ //pre is not num
-                sum = str[i] - '0';
+                num = str[i] - '0';
             }
+            st.push(num);
             pre_is_num = true;
         }
 
