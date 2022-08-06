@@ -6,11 +6,11 @@ void merge(vector<int>&arr, int l, int r){
     // split to smallest piece
     if(l >= r)
         return;
-    int mid = l+(r-l)/2; // avoid a + b > INT_MAX
+    int mid = l+(r-l)/2; //  avoid a + b > INT_MAX
     merge(arr, l, mid);
     merge(arr,mid+1,r);
 
-    // reform the numbers between arr[l] and arr[r]
+    // reform the numbers between arr[l] and arr[r] 
     vector<int>tmp;
     int ptrL = l, ptrR = mid+1;
     
