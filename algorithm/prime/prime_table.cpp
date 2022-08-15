@@ -1,6 +1,7 @@
 #include <iostream>
 #define n 20000
 using namespace std;
+// create a prime table which size is 20000 
 bool table[n];
 
 int main(){
