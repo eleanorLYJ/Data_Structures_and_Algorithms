@@ -11,7 +11,6 @@ class Heap{
         void insert(int);
         void pop();
         int getMaxValue();
-        bool isFull();
         void heapify(int *, int); // int arr[], int t (tail of arr) 
         void print(); 
         Heap();
@@ -25,6 +24,10 @@ Heap::Heap(){
 }
 
 void Heap::insert(int val){
+    if(tail >= size-1){
+        cout << "sorry! Heap is Full! \n";
+        return;
+    }
     // add val to tail
     h[++tail] = val;
     int ptr = tail; // avoid changing tail
@@ -36,21 +39,24 @@ void Heap::insert(int val){
 }
 
 void Heap::pop(){
-    // swap head value and tail value
-
-    swap(h[1],h[tail]);
+    if(tail == 0){
+        cout << "sorry! Heap is empty!\n";
+        return;
+    }
+    //swap head value and tail value
+    swap(h[1], h[tail]);
     tail--;
-    int bigger, head = 1;
-    while(head > tail){
-        // compare left child and right child 
-        if(h[head*2] > h[head*2+1] ) bigger = head*2;
-        else bigger = head*2+1;
+    int head = 1;
+    while(head <= tail){
+        int bigger = head;
+        // choose the child which is bigger than head
+        // notice : boundary! 
+        if(head*2+1 <= tail && h[head*2+1] > h[bigger]) bigger = head*2+1;
+        if(head*2 <= tail && h[head*2] > h[bigger]) bigger = head*2;
         // if head val is bigger than children, break the loop  
-        if(h[head] > h[bigger]) break;
-        else{
-            swap(h[head],h[bigger]);
-            head = bigger;
-        }
+        if(bigger == head) break;
+        swap(h[head],h[bigger]);
+        head = bigger;
     }
 }
 
@@ -61,30 +67,20 @@ int Heap::getMaxValue(){
 void Heap::heapify(int* arr, int len){
     tail = len;
     for(int i = tail; i >= 1; i--){
+        int ptr = i;
         while(true){
-            int left = ptr*2, right = ptr*2+1, int cur = i;
-            if(right <= tail && arr[ptr] < max(arr[left],arr[right])){
-                if(arr[left] > arr[right]){
-                    swap(arr[ptr], arr[left]);
-                    ptr = left;
-                }
-                else{
-                    swap(arr[ptr], arr[right]);
-                    ptr = right;
-                }
-            }
-            else if(left == tail && arr[ptr] < arr[left]){
-                swap(arr[left], arr[ptr]);
-                break;
-            }
-            else{
-                break;
-            }
+            // choose the child which is bigger than ptr
+            int left = ptr*2, right = ptr*2+1, bigger = ptr;
+            if(left <= tail && arr[bigger] < arr[left]) bigger = left;
+            if(right <= tail && arr[bigger] < arr[right]) bigger = right;
+            if(bigger == ptr) break;
+            swap(arr[bigger],arr[ptr]);
+            ptr = bigger;
         }
     }
     // assign to h
-    for(int i = 1; i <= tail; i++){
-        h[i] = arr[i];   
+    for(int i = 1; i <= tail ; i++){
+        h[i] = arr[i];
     }
 }
 
@@ -100,10 +96,12 @@ int main(){
     a.insert(1);
     a.insert(2);
     a.insert(3);
+    a.insert(4);
+    a.print(); // 4 3 2 1
     cout << "max Value: "<< a.getMaxValue() << endl;
     a.pop();
-    a.print(); // 2 1
-    int arr [4] = {0,4,5,6};
+    a.print(); // 3 1 2
+    int arr [4] = {0, 4, 5, 6};
     a.heapify(arr, 3);
     a.print(); // 6 5 4
     return 0;
