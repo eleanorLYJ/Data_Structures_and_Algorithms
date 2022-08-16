@@ -11,6 +11,7 @@ class Heap{
         void insert(int);
         void pop();
         int getMaxValue();
+        bool isFull();
         void heapify(int *, int); // int arr[], int t (tail of arr) 
         void print(); 
         Heap();
@@ -27,7 +28,7 @@ void Heap::insert(int val){
     // add val to tail
     h[++tail] = val;
     int ptr = tail; // avoid changing tail
-    while(h[ptr/2] < h[ptr] && ptr/2 >= 1){
+    while(ptr/2 >= 1 && h[ptr/2] < h[ptr]){
         swap(h[ptr/2],h[ptr]);
         ptr = ptr/2;
     }
@@ -36,6 +37,7 @@ void Heap::insert(int val){
 
 void Heap::pop(){
     // swap head value and tail value
+
     swap(h[1],h[tail]);
     tail--;
     int bigger, head = 1;
@@ -59,10 +61,9 @@ int Heap::getMaxValue(){
 void Heap::heapify(int* arr, int len){
     tail = len;
     for(int i = tail; i >= 1; i--){
-        int ptr = i;
         while(true){
-            int left = ptr*2, right = ptr*2+1;
-            if(left < tail && right <= tail && arr[ptr] < max(arr[left],arr[right])){
+            int left = ptr*2, right = ptr*2+1, int cur = i;
+            if(right <= tail && arr[ptr] < max(arr[left],arr[right])){
                 if(arr[left] > arr[right]){
                     swap(arr[ptr], arr[left]);
                     ptr = left;
