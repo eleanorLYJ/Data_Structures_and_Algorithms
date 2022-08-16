@@ -6,7 +6,7 @@ bool binary_search(int arr [], int target,  int len){
     int L = 0, R = len -1;
     bool flag = false; //record wheather find the target
     while(L <= R){
-        int mid = (L + R) / 2;
+        int mid = L + (R - L) / 2 //prevent number overflow.
         if(arr[mid] == target){
             flag = true;
             break;
