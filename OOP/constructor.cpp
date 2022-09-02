@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 //practice protect
-
+//see the sequence of the event from construction to destruction
 class parent{
     public:
         ~parent(){
@@ -41,7 +41,7 @@ void child::print(){
 }
 
 int main(){
-    child* A = new child(1,2,3); // construc parent1 and child
+    child* A = new child(1,2,3);
     A->print(); // 1
     delete A;
     return 0;
