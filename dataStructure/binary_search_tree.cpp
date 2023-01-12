@@ -1,8 +1,5 @@
 #include <iostream>
 using namespace std;
-
-// 寫了 insert跟 delete 各寫了iterative版 與recursive版的
-
 struct node{
     int val;
     node* left;
@@ -10,193 +7,219 @@ struct node{
     node(int n){
         this->val = n;
         this->left = NULL;
-        this->right = NULL; 
+        this->right = NULL;
     }
 };
 class bst{
     public:
-        void insert(int);
-        void r_insert(int n) { recursive_insert(n, root); }
-        void del(int);
-        void r_del(int n){ root = r_delete(n,root);}
-        void r_traversal(){ recursive_traversal(root);}
-        bst();
-    private:
-        node* root;  
+        void i_insert(int n);
+        void r_insert(int n){ recursive_insert(n, root);};
+        void i_delete(int n);
+        void r_delete(int n){ root = recursive_delete(n, root);}
+        void inorder(){recursive_inorder(root);}
+        bst(){
+            root = NULL;
+        }
+    public:
+        node* root;
         node* recursive_insert(int, node*);
-        void recursive_traversal(node*);
-        node* r_delete(int, node*);
+        node* recursive_delete(int, node*);
+        void recursive_inorder(node*); // return void is ok ?
 };
-
-bst::bst(){
-    root = NULL;
-}
-void bst::insert(int n){
-    if(!root){
+void bst::i_insert(int n){
+    if(root == NULL){
         root = new node(n);
         return;
     }
     node* ptr = root;
     node* pre_ptr = root;
-    
-    while(true){
-        if(ptr->val < n){
-            pre_ptr = ptr;
-            ptr = ptr-> right;
-            if(!ptr){
-                ptr = new node(n);
-                pre_ptr-> right = ptr;
-                break;
-            }
+    // find
+    while(ptr != NULL){
+        pre_ptr = ptr;
+        if(ptr->val > n){
+            ptr = ptr->left;
         }
-        else{
-            pre_ptr = ptr;
-            ptr = ptr-> left;
-            if(!ptr){
-                ptr = new node(n);
-                pre_ptr-> left = ptr;
-                break;
-            }
+        else{ // ptr->val < n
+            ptr = ptr->right;
         }
     }
+    ptr = new node(n);
+    // pre_ptr該往左指還是右指
+    pre_ptr->val > n ? pre_ptr->left = ptr : pre_ptr->right = ptr;
 }
+
 node* bst::recursive_insert(int n, node* ptr){
     if(!ptr){
-        ptr = new node(n);
-        return ptr;
+        return new node(n);
     }
-    if(ptr->val > n) ptr->left = recursive_insert(n, ptr->left);
-    else ptr->right = recursive_insert(n, ptr->right);
+    if(ptr->val > n){
+        ptr->left = recursive_insert(n, ptr->left);
+    }
+    else{
+        ptr->right = recursive_insert(n, ptr->right);
+    }
     return ptr;
 }
-void bst::del(int n){
+
+void bst::i_delete(int n){
     if(!root){
         cout << "bst is empty\n";
         return;
     }
-    if(!root->left && !root->right){
-        delete root;
-        root = NULL;
-    }
-    // find
-    node* ptr = root;
-    node* pre_ptr = root;
-    bool found = false;
-    // search
-    while(ptr){
-        if(ptr->val == n){
-            found = true;
-            break;
-        }
-        pre_ptr = ptr;
-        if(ptr-> val > n){
-            ptr = ptr->left;
-        }
-        else{
-            ptr = ptr->right;
-        }
-    }
-    if(!found) return;
-    // 無小孩
-    if(!ptr->left && !ptr->right){
-        ptr = NULL;
-        delete ptr;
-        pre_ptr->val > n? pre_ptr->left = NULL: pre_ptr->right = NULL;
-        
-    }
-    //有右小孩
-    else if(!ptr->left && ptr->right){
-        pre_ptr->val > n? pre_ptr->left = ptr->right: pre_ptr->right = ptr->right;
-        delete ptr;
-    }
-    // 有左小孩
-    else if(ptr->left && !ptr->right){
-        pre_ptr->val > n? pre_ptr->left = ptr->left: pre_ptr->right = ptr->left;
-        delete ptr; 
-    }
-    else{ // 有左右小孩
-        // find the successor
-        node* s = ptr->right;
-        node* pre_s = ptr; // =.=
-        while(s->left){
+    // 如果要刪除的是根節點
+    if(root->val == n){
+        // find successor
+        node* s = root->right;
+        node* pre_s = root;
+        while(s && s->left){
             pre_s = s;
             s = s->left;
         }
-        //換掉val而已，因為原本的左右小孩不能被換掉
-        ptr->val = s->val;
-        // sucessor若有右小孩
-        if(s->right){
-            pre_s->val > s->val ? pre_s->left = s->right:   pre_s->right = s->right;
-        } 
-        delete s;
-    }
-}
-node* bst::r_delete(int n, node* root){
-    if(!root){
-        return root;
-    }
-    if(root->val == n){
-        // 無小孩
-        if(!root->left && !root->right){
-            delete root;
-            root = NULL;
+        // 根節點存在右子樹
+        if(s){
+            root->val = s->val;
+            // successor 有右子樹
+            if(s->right) 
+                (pre_s->val > s->val)? (pre_s->left = s->right): (pre_s->right = s->right);
+            else 
+                (pre_s->val > s->val)? (pre_s->left = NULL): (pre_s->right = NULL);
+            delete s;
         }
-        // 有左小孩
-        else if(!root->right){
+        // if 根節點沒有右子樹 有左子樹
+        else if(root->left){
             node* tmp = root;
             root = root->left;
             delete tmp;
         }
-        // 有右小孩
-        else if(!root->left){
-            node* tmp = root;
-            root = root->right;
-            delete tmp;
-            //為麼錯??? 因為root的前一個沒將指向root的pointer設成NULL?-
+        else{ //沒有左右子樹
+            delete root;
+            root = NULL;
         }
-        else{
-            //find sucessor(s)
-            node* s = root->right;
-            while(s->left){
-                s = s->left;
-            }
-            //change the val
-            root-> val = s->val;
-            // delete the leftest node in the right tree
-            root->right = r_delete(s->val, root->right);
-        }
-        
-    }
-    else if(root->val > n){
-        root->right = r_delete(n, root->right);
-    }
-    else{
-        root->left = r_delete(n, root->left);
-    }
-    return root;
-}
-void bst::recursive_traversal(node* root){
-    node* ptr = root;
-    if (!ptr){
         return;
     }
-    if(ptr->left) recursive_traversal(ptr->left);
-    cout << ptr->val << " ";
-    if(ptr->right) recursive_traversal(ptr->right);
-}
 
+    node* ptr = root;
+    node* pre_ptr = NULL;
+
+    // find
+    while(ptr!= NULL && ptr->val != n){ // && !!!
+        pre_ptr = ptr;
+        if(ptr->val > n) ptr = ptr->left; 
+        else  ptr = ptr->right;
+    }
+    if(!ptr){
+        cout << "not found!\n";
+        return;
+    }
+    // check pre_ptr是該往左指還是往右
+    // 0 is left ; 1 is right 
+    bool l_r = pre_ptr->val > n ? 0: 1;
+    // 沒有小孩
+    if(!ptr->left && !ptr->right){
+        if(l_r) pre_ptr->right = NULL;
+        else pre_ptr->left = NULL;
+        delete ptr;
+    }
+    // 左小孩
+    else if(!ptr->right){
+        if(l_r) pre_ptr->right = ptr->left;
+        else pre_ptr->left = ptr->left;
+    }
+    //右小孩
+    else if(!ptr->left){
+        if(l_r) pre_ptr->right = ptr->right;
+        else pre_ptr->left = ptr->right;
+    }
+    // 有左右小孩
+    else{
+        // find sucessor
+        node* s = ptr->right;
+        node* pre_s = ptr;
+        while(s->left){
+            pre_s = s;
+            s = s->left;
+        }
+        ptr->val = s->val;
+
+        // sucessor 有右小孩
+        if(s->right){
+            if(pre_s->val > s->val)
+                pre_s->left = s->right ;
+            else
+                pre_s->right = s->right;
+        }
+        // sucessor 沒有右小孩
+        else {
+            if(pre_s->val > s->val)
+                pre_s->left = NULL;
+            else
+                pre_s->right = NULL;
+        }
+
+        delete s;
+    }
+}
+node* bst::recursive_delete(int n, node* ptr){
+    if(!ptr)
+        return NULL;
+    if(ptr->val > n)
+        ptr->left = recursive_delete(n, ptr->left);
+    else if(ptr->val < n)
+        ptr->right = recursive_delete(n, ptr->right);
+    // ptr->val == n
+    else{ 
+        // 沒有小孩
+        if(!ptr->left && !ptr->right){
+            delete ptr;
+            ptr = NULL;
+        }
+        // 右小孩
+        else if(!ptr->left){
+            node* tmp = ptr;
+            ptr = ptr->right;
+            delete tmp; 
+        }
+        // 左小孩
+        else if(!ptr->right){
+            node* tmp = ptr;
+            ptr = ptr->left; // =.=
+            delete tmp; 
+        }
+        // 有左右小孩
+        else{
+            // find successor
+            node* s = ptr->right;
+            while(s-> left){
+                s = s->left;
+            }
+            ptr->val = s->val;
+            ptr->right = recursive_delete(s->val, ptr->right);
+        }
+    }
+    return ptr;
+}
+void bst::recursive_inorder(node* p){
+    if(!p) return;
+    recursive_inorder(p->left);
+    cout << p->val << " ";
+    recursive_inorder(p->right);
+}
 int main(){
     bst a;
-    a.insert(5);
-    a.r_insert(10);
-    a.insert(3);
-    a.r_insert(15);
-    cout << "before delete:"; 
-    a.r_traversal();
-    cout << endl;
-    cout << "after delete: ";
-    a.r_del(5); // or a.del(5)
-    a.r_traversal();
-    cout << endl;
+    a.i_insert(5);
+    a.i_insert(2);
+    a.r_insert(6);
+    a.i_insert(10);
+    a.r_insert(7); 
+    a.r_delete(5); // delete root with rchild and lchiild
+    a.inorder(); // 2 6 7 10
+    cout << "\n----\n";
+    a.r_delete(10);// delete node with lchild
+    a.inorder(); // 2 6 7
+    cout << "\n----\n";
+    a.i_insert(1);
+    a.i_insert(3);
+    a.r_delete(2); // delete the node with rchild and lchiild
+    a.inorder(); //1 3 6 7
     return 0;
 }
