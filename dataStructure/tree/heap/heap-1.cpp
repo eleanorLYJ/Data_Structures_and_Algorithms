@@ -1,11 +1,11 @@
 #include <iostream>
 #define size 100
 using namespace std;
+// 從index-1開始的maxheap
+
     // i
 //i*2    i*2+1
 
-// maxheap
-// maxheap[0] has nothing.
 class Heap{
     public:
         void insert(int);
@@ -49,8 +49,8 @@ void Heap::pop(){
     int head = 1;
     while(head <= tail){
         int bigger = head;
-        // choose the child which is bigger than head
-        // notice : boundary! 
+        // choose the child which is bigger than val of head
+        // mention : boundary!! 
         if(head*2+1 <= tail && h[head*2+1] > h[bigger]) bigger = head*2+1;
         if(head*2 <= tail && h[head*2] > h[bigger]) bigger = head*2;
         // if head val is bigger than children, break the loop  

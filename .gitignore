@@ -5,3 +5,6 @@ dataStructure/cirularLinkedList.cpp
 combination.cpp
 binary_search.cpp
 pointer/*
+graph/*
+dataStructure/Makefile
+algorithm/DP/LongestSubStringPalindrome.cpp
