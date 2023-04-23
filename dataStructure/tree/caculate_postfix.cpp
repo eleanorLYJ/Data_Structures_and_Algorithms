@@ -1,7 +1,7 @@
 #include <iostream>
 #include <stack>
 using namespace std;
-//https://sites.google.com/site/zsgititit/home/jin-jiec-cheng-shi-she-ji/d016-hou-xu-yun-suan-fa
+// 題目: https://sites.google.com/site/zsgititit/home/jin-jiec-cheng-shi-she-ji/d016-hou-xu-yun-suan-fa
 //運算子包含 + - * / % 等五個
 int main(){
     string str;
