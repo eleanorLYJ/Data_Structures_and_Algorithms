@@ -79,9 +79,9 @@ void printPath(int source, int target) {
 }
 int main() {
     init();
-    matrix[0][1] = matrix[1][0] = -1;
-    matrix[0][2] = matrix[2][0] = -5;
-    matrix[1][2] = matrix[2][1] = -7;
+    matrix[0][1] = matrix[1][0] = 1;
+    matrix[0][2] = matrix[2][0] = 5;
+    matrix[1][2] = matrix[2][1] = 7;
     matrix[1][3] = matrix[3][1] = 4;
     matrix[2][4] = matrix[4][2] = 2;
     matrix[3][5] = matrix[5][3] = 5;
