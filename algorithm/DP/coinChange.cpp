@@ -42,17 +42,22 @@ int memorization(vector<int> coins, int target, vector<int> memo) {
 // 從base開始想 -> dp[0] = 0
 // 思考移動方式: 第i個根據根據
 // 代表找不到一個組合可以湊出零錢!
-// 以下，等同轉移式: dp[i] = min(dp[i], dp[i-coin]), when i > coin
+// 轉移式: dp[i] = min(dp[i], dp[i-coin]), when i > coin
 int buttomUp(vector<int> coins, int target) {
     vector<int> dp(target + 1, 1e8);
     dp[0] = 0;
-    for (int i = 0; i < target; i++) {
-        if (dp[i] != 1e8) {
-            for (int c : coins) {
-                if (i + c <= target) {
-                    dp[i + c] = min(dp[i + c], dp[i] + 1);
-                }
-            }
+    for (int i = 0; i < target + 1; i++) {
+        //寫法一
+        // if (dp[i] != 1e8) {
+        for (int c : coins) {
+            // 寫法一
+            // if (i + c <= target) {
+            //     dp[i + c] = min(dp[i + c], dp[i] + 1);
+            // }
+            // 寫法二
+            if (i - c < 0)
+                continue;
+            dp[i] = min(dp[i], dp[i - c] + 1);
         }
     }
     if (dp[target] == 1e8)
@@ -64,6 +69,6 @@ int main() {
     int target = 75;
     cout << brute(coins, target) << endl;                             // 4
     cout << memorization(coins, target, vector<int>(target)) << endl; // 4
-    cout << buttomUp(coins, target);                                  // 4
+    cout << buttomUp(coins, 75);                                      // 4
     return 0;
 }
