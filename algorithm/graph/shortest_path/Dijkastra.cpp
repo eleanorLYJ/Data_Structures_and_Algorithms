@@ -60,7 +60,7 @@ int main() {
     while (true) {
         if (vertex == source) {
             break;
-        } else if (vertex == vertex) {
+        } else if (vertex == parent[vertex]) {
             cout << "cannot reach!";
             break;
         } else {
