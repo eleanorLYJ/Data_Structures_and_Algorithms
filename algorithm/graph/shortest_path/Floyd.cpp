@@ -14,7 +14,7 @@ void init() {
         matrix[i][i] = 0;
     }
 }
-void floydWarchall() {
+void floydwarshall() {
 
     for (int k = 0; k < matrix.size(); k++)
         for (int i = 0; i < matrix.size(); i++)
@@ -47,7 +47,7 @@ int main() {
     printf("origin: \n");
     printAllPath();
 
-    floydWarchall();
+    floydwarshall();
 
     printf("result \n");
     printAllPath();
