@@ -4,7 +4,8 @@
 using namespace std;
 
 // 遞迴轉移式: f(i, j, k) = min( f(i, k, k-1) + f(k, j, k-1), f(i, j, k-1) )
-// DP轉移是:　d[i,j] = min(d[i,j], d[i,k] + d[k,j]) (k = 1,2,...,n)　可把k省略
+// DP轉移是:　d[i,j] = min(d[i,j], d[i,k] + d[k,j]) (k =
+// 1,2,...,n)　原本DPtable該是3維的，但可把k省略
 
 // adjacency matrix
 vector<vector<int>> matrix(number, vector<int>(number, 1e8));
